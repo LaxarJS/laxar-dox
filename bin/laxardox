@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var program = require( 'commander' );
+var fs = require( 'fs' );
+
+var docBuilder = require( '../' );
+
+program
+   .version( '0.0.1' )
+   .usage( '[options] <file>' )
+   .option( '-o, --output [outputFile]', 'The name of the generated api doc file, "out.md" if not given' )
+   .parse( process.argv );
+
+var files = program.args;
+if( files.length !== 1 ) {
+   console.error( 'Need exactly one file as argument.' );
+   process.exit( 1 );
+}
+var file = files[0];
+
+var jsCode = fs.readFileSync( file ).toString();
+var doc = docBuilder.createMarkdown( jsCode );
+
+fs.writeFileSync( program.output || 'out.md', doc );

@@ -1,0 +1,19 @@
+{
+   "name": "laxardox",
+   "description": "A JavaScript API doc generator using dox to output markdown files for the LaxarJS project.",
+   "version": "0.0.1",
+   "author": {
+      "name": "LaxarJS",
+      "email": "info@laxarjs.org"
+   },
+   "contributors": [],
+   "dependencies": {
+      "commander": "2.2.x",
+      "dox": "0.4.x"
+   },
+   "bin": {
+      "laxardox": "./bin/laxardox"
+   },
+   "license": "MIT",
+   "homepage": "http://www.laxarjs.org"
+}
