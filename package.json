@@ -1,7 +1,7 @@
 {
    "name": "laxar_dox",
    "description": "A JavaScript API doc generator using dox to output markdown files for the LaxarJS project.",
-   "version": "0.0.1",
+   "version": "0.1.0",
    "author": {
       "name": "LaxarJS",
       "email": "info@laxarjs.org"
