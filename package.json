@@ -6,10 +6,11 @@
       "name": "LaxarJS",
       "email": "info@laxarjs.org"
    },
-   "contributors": [],
+   "contributors": [ ],
    "dependencies": {
       "commander": "2.2.x",
-      "dox": "0.4.x"
+      "dox": "~0.7.1",
+      "swig": "^1.4.2"
    },
    "bin": {
       "laxardox": "./bin/laxardox"

@@ -21,4 +21,4 @@ var file = files[0];
 var jsCode = fs.readFileSync( file ).toString();
 var doc = docBuilder.createMarkdown( jsCode );
 
-fs.writeFileSync( program.output || 'out.md', doc );
+fs.writeFileSync( program.output || 'out.md', doc || '' );
