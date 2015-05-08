@@ -1,16 +1,20 @@
 {
    "name": "laxar_dox",
    "description": "A JavaScript API doc generator using dox to output markdown files for the LaxarJS project.",
-   "version": "0.2.0-pre",
+   "version": "1.0.0-alpha.0",
    "author": {
       "name": "LaxarJS",
       "email": "info@laxarjs.org"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/LaxarJS/laxar_dox.git"
    },
    "contributors": [ ],
    "dependencies": {
       "commander": "2.2.x",
       "dox": "~0.7.1",
-      "swig": "^1.4.2"
+      "swig": "~1.4.2"
    },
    "bin": {
       "laxardox": "./bin/laxardox"
