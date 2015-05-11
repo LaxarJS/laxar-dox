@@ -2,6 +2,9 @@
 
 ## Last Changes
 
+
+## 1.0.0-alpha.1
+
 - [#3](https://github.com/LaxarJS/laxar_dox/issues/3): added tags for module and directive
 
 
