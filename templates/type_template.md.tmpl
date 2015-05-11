@@ -1,8 +1,8 @@
-## <a name="{{ name }}"></a>{{ name }}
+### <a name="{{ name }}"></a>{{ name }}
 {{ description }}
 
 {% if params.length %}
-#### Parameters
+##### Parameters
 | Property | Type | Description |
 | -------- | ---- | ----------- |
 {% for param in params %}| {{ param.name|wrap('_',param.dox.optional) }} | `{{ param.types.join( '`, `') }}` | {{param.description }} |

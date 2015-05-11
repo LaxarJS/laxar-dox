@@ -1,4 +1,10 @@
-# Contents
+{% if module %}
+# {{module.name}}
+
+{{module.description}}
+{% endif %}{# module #}
+
+## Contents
 
 {% if moduleMembersToc %}
 **Module Members**
@@ -10,6 +16,11 @@
 {{ injectablesToc }}
 {% endif %}{# injectablesToc #}
 
+{% if directivesToc %}
+**AngularJS Directives**
+{{ directivesToc }}
+{% endif %}{# directivesToc #}
+
 {% if typesToc %}
 **Types**
 {{ typesToc }}
@@ -17,16 +28,21 @@
 
 
 {% if moduleMembers %}
-# Module Members
+## Module Members
 {{ moduleMembers }}
 {% endif %}{# moduleMembers #}
 
 {% if injectables %}
-# Injectable Services
+## Injectable Services
 {{ injectables }}
 {% endif %}{# injectables #}
 
+{% if directives %}
+## AngularJS Directives
+{{ directives }}
+{% endif %}{# directives #}
+
 {% if types %}
-# Types
+## Types
 {{ types }}
 {% endif %}{# types #}

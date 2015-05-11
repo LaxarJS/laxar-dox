@@ -10,6 +10,29 @@ Basically documentation uses [JSDoc](http://usejsdoc.org/) tags and notation, li
 
 Since *Laxar Dox* is intended to be primarily used by contributors to *LaxarJS* sources, this readme mentions some conventions that are not a requirement to make the tool work, but should instead guarantee consistent sources and documentation.
 
+## Documenting a Module
+
+An introductory description for the complete module can be given using the `@module` tag followed by the name of the respective module.
+If a module description is provided with a module, it should be right between the copyright header and the start of the AMD module definition.
+
+Example:
+```
+/**
+ * Copyright 2015 aixigo AG
+ * Released under the MIT license.
+ * http://laxarjs.org/license
+ */
+/**
+ * Just a test module.
+ * It provides some helpers for important tasks, such as: ...
+ *
+ * @module testModule
+ */
+define( [], function() {
+   // ...
+} );
+```
+
 ## Documenting Functions
 
 Generally function documentation consists of three parts:
@@ -161,6 +184,29 @@ module.factory( 'axDummyService', function() {
        */
       memberTwo: function() { /* ... */ }
       
+   };
+} );
+```
+
+## Documenting AngularJS Directives
+
+Documenting *AngularJS* directives is similar to the documentation of injectable services.
+The according tag is `@directive`, which can directly be followed by the according directive's name, or alternatively an additional `@name` tag.
+
+It's possible to document members of a directive too, but this is rather ambiguous:
+Are the documented members functions attached to the directive's scope object or rather belong to its controller?
+Hence when the need arises to document directive members, it should explicitly be mentioned where they belong to and under which circumstances they should be invoked.
+
+Example:
+```
+/**
+ * A directive, that doesn't change anything for the node it belongs to.
+ *
+ * @directive myDirective
+ */
+module.directive( 'myDirective', function() {
+   return {
+      // ...
    };
 } );
 ```
