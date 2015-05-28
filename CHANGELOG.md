@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#4](https://github.com/LaxarJS/laxar_dox/issues/4): made whitespace removal less aggressive
+
 
 ## 1.0.0-alpha.1
 
