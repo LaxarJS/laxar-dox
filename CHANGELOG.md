@@ -2,6 +2,7 @@
 
 ## Last Changes
 
+- [#5](https://github.com/LaxarJS/laxar_dox/issues/5): made variadic functions better recognizable
 - [#4](https://github.com/LaxarJS/laxar_dox/issues/4): made whitespace removal less aggressive
 
 

@@ -1,11 +1,11 @@
-#### <a name="{{ fullName }}"></a>{{ fullName }}({{ paramsForArgsList.join(', ')|wrap(' ',paramsForArgsList.length)}})
+#### <a name="{{ fullName }}"></a>{{ fullName }}({{ paramsForArgsList.join(', ')|wrap(' ',paramsForArgsList.length) }})
 {{ description }}
 
 {% if params.length %}
 ##### Parameters
 | Property | Type | Description |
 | -------- | ---- | ----------- |
-{% for param in params %}| {{ param.name|wrap('_',param.dox.optional) }} | `{{ param.types.join( '`, `') }}` | {{param.description }} |
+{% for param in params %}| {{ param.name|wrap('_',param.dox.optional) }}{{ '...'|if(param.dox.variable) }} | `{{ param.types.join( '`, `') }}` | {{ param.description }} |
 {% endfor %}
 {% endif %}{# params.length #}
 
