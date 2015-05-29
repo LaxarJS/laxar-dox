@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+## 1.0.0-beta.0
+
 - [#6](https://github.com/LaxarJS/laxar-dox/issues/6): renaming: adjusted naming where necessary
 
 
