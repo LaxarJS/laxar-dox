@@ -2,6 +2,9 @@
 
 ## Last Changes
 
+
+## v1.0.1
+
 - [#7](https://github.com/LaxarJS/laxar-dox/issues/7): tables: preserving linebreaks where feasible
 
 
