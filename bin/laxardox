@@ -1,24 +1,88 @@
 #!/usr/bin/env node
-
+/* eslint-disable no-var, no-console, prefer-arrow-callback */
 var program = require( 'commander' );
 var fs = require( 'fs' );
+var path = require( 'path' );
 
 var docBuilder = require( '../' );
+var packageJson = require( '../package.json' );
 
 program
-   .version( '0.0.1' )
-   .usage( '[options] <file>' )
-   .option( '-o, --output [outputFile]', 'The name of the generated api doc file, "out.md" if not given' )
+   .version( packageJson.version )
+   .usage( '[options] <file(s)>' )
+   .option(
+      '-o, --output [outputFile]',
+      'The name of the generated api doc file, "out.md" if not given'
+   )
+   .option(
+      '-d, --directory [outputDirectory]',
+      'The output directory for generated documentation. Filenames are generated as "*filename*.md".'
+   )
+   .on( '--help', function() {
+      console.log( '  If more than one file is passed as argument, the -d option is mandatory.' );
+      console.log(
+         '  If exactly one file is given, the -o option takes precedence over the -d option, ' +
+         'but neither is mandatory.' );
+      console.log( '' );
+      console.log( '  Examples:' );
+      console.log( '');
+      console.log( '    $ bin/laxardox src/lib.js' );
+      console.log( '       # creates "out.md" in the current directory' );
+      console.log( '    $ bin/laxardox -o docs/lib.md src/lib.js' );
+      console.log( '       # creates "docs/lib.md"' );
+      console.log( '    $ bin/laxardox -d docs src/lib.js src/utils.js' );
+      console.log( '       # creates "docs/lib.js.md" and "docs/utils.js.md"' );
+      console.log( '');
+   } )
    .parse( process.argv );
 
+if( !program.args.length ) {
+   program.help();
+   process.exit( 0 );
+}
+
 var files = program.args;
-if( files.length !== 1 ) {
-   console.error( 'Need exactly one file as argument.' );
+if( files.length < 1 ) {
+   console.error( 'Need one or more files as argument.' );
    process.exit( 1 );
 }
-var file = files[0];
 
-var jsCode = fs.readFileSync( file ).toString();
-var doc = docBuilder.createMarkdown( jsCode );
+if( files.length > 1 && !program.directory ) {
+   console.error( 'Need a directory for multiple files (-d option).' );
+   process.exit( 1 );
+}
 
-fs.writeFileSync( program.output || 'out.md', doc || '' );
+if( files.length === 1 && program.directory && program.output ) {
+   console.error( 'For a single file please specify either -o or -d, not both.' );
+   process.exit( 1 );
+}
+
+var directoryCreated = false;
+files.forEach( function( file ) {
+   var jsCode = fs.readFileSync( file ).toString();
+   var doc = docBuilder.createMarkdown( jsCode );
+
+   var outFile = outputFile( file );
+   if( !directoryCreated ) {
+      try {
+         fs.accessSync( path.dirname( outFile ) );
+      }
+      catch( err ) {
+         // directory simply doesn't exist and we need to create it
+         fs.mkdirSync( path.dirname( outFile ) );
+      }
+      finally {
+         directoryCreated = true;
+      }
+   }
+   fs.writeFileSync( outFile, doc || '' );
+} );
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function outputFile( file ) {
+   if( files.length > 1 || ( !program.output && program.directory ) ) {
+      return path.join( program.directory, path.basename( file ) + '.md' );
+   }
+   return program.output || 'out.md';
+}
