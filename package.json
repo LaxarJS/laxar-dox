@@ -1,24 +1,43 @@
 {
-   "name": "laxar-dox",
-   "description": "A JavaScript API doc generator using dox to output markdown files for the LaxarJS project.",
-   "version": "1.1.0-pre",
-   "author": {
-      "name": "LaxarJS",
-      "email": "info@laxarjs.org"
-   },
-   "repository": {
-      "type": "git",
-      "url": "https://github.com/LaxarJS/laxar-dox.git"
-   },
-   "contributors": [ ],
-   "dependencies": {
-      "commander": "2.2.x",
-      "dox": "~0.7.1",
-      "swig": "~1.4.2"
-   },
-   "bin": {
-      "laxardox": "./bin/laxardox"
-   },
-   "license": "MIT",
-   "homepage": "http://www.laxarjs.org"
+  "name": "laxar-dox",
+  "description": "A JavaScript API doc generator using dox to output markdown files for the LaxarJS project.",
+  "version": "2.0.0-pre",
+  "license": "MIT",
+  "homepage": "http://www.laxarjs.org",
+  "author": {
+    "name": "LaxarJS",
+    "email": "info@laxarjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LaxarJS/laxar-dox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LaxarJS/laxar-dox/issues",
+    "email": "info@laxarjs.org"
+  },
+  "scripts": {
+    "prepublish": "npm run lint && npm run build",
+    "build": "babel -d lib src",
+    "lint": "eslint src"
+  },
+  "main": "lib/index.js",
+  "bin": {
+    "laxardox": "./bin/laxardox"
+  },
+  "contributors": [],
+  "dependencies": {
+    "commander": "~2.9.0",
+    "dox": "~0.8.1",
+    "swig": "~1.4.2",
+    "source-map-support": "^0.4.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-register": "^6.11.6",
+    "eslint": "^3.0.1",
+    "eslint-config-laxarjs": "^0.3.0"
+  }
 }

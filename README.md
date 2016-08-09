@@ -1,6 +1,6 @@
 # Laxar Dox
 
-*Laxar Dox* is an API documentation generator specifically adjusted to the structure of *LaxarJS* code.
+> The API documentation generator specifically adjusted to the structure of *LaxarJS* code.
 
 ## About
 
@@ -68,7 +68,7 @@ Example:
  *    this is the first argument to the function
  * @param {Number} [secondArgument]
  *    this is the second argument to the function, which may be omitted
- * 
+ *
  * @return {Boolean}
  *    in some cases, it returns `true`, otherwise `false`
  *
@@ -125,7 +125,7 @@ var api = {
    isVisible: function() {
       return isVisible( areaName );
    },
-   
+
    // ...
 };
 ```
@@ -166,14 +166,14 @@ Example with more api:
  */
 module.factory( 'axDummyService', function() {
    return {
-      
+
       /**
        * Does nothing useful.
        *
        * @memberOf axDummyService
        */
       memberOne: function() { /* ... */ },
-      
+
       /**
        * Does nothing useful too, but at least takes an argument
        *
@@ -183,7 +183,7 @@ module.factory( 'axDummyService', function() {
        * @memberOf axDummyService
        */
       memberTwo: function() { /* ... */ }
-      
+
    };
 } );
 ```

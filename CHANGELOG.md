@@ -2,6 +2,7 @@
 
 ## Last Changes
 
+- [#11](https://github.com/LaxarJS/laxar-dox/issues/11): updated code to ES2015
 - [#7](https://github.com/LaxarJS/laxar-dox/issues/7): tables: preserving linebreaks where feasible
 
 

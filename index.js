@@ -1,7 +1,6 @@
 /**
- * Copyright 2015 aixigo AG
+ * Copyright 2016 aixigo AG
  * Released under the MIT license.
  * http://laxarjs.org/license
  */
-/*jshint node:true*/
-module.exports = require( './lib/doc_builder' );
+module.exports = require( './lib/doc-builder' );
