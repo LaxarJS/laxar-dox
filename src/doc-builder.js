@@ -10,10 +10,11 @@ import swig from 'swig';
 
 const GLOBAL_ITEM_NAME = 'ax__global__';
 
-export function createMarkdown( jsCode ) {
+export function createMarkdown( jsCode, options = {} ) {
    const doxResults = dox
       .parseComments( jsCode, {
-         raw: true
+         raw: true,
+         skipSingleStart: true
       } )
       // filter out the copyright header
       .filter( jsDoc => !( description( jsDoc ).indexOf( 'Copyright' ) === 0 && jsDoc.line === 1 ) )
@@ -27,20 +28,10 @@ export function createMarkdown( jsCode ) {
    swig.setDefaults( {
       autoescape: false,
       locals: {
-         isFunction: item => {
-            if( item.dox.ctx.type === 'method' || item.dox.ctx.type === 'function' ) {
-               return true;
-            }
-            if( item.dox.tags ) {
-               const hasFunctionType = item.dox.tags.some( tag =>
-                  tag.type === 'type' &&
-                     ( tag.types.indexOf( 'Function' ) !== -1 || tag.types.indexOf( 'function' ) !== -1 )
-               );
-               if( hasFunctionType ) {
-                  return hasFunctionType;
-               }
-            }
-            return false;
+         isFunction,
+         firstType: dox => {
+            const types = ( dox.tags.filter( _ => _.type === 'type' )[ 0 ] || {} ).types || [];
+            return types[ 0 ];
          }
       }
    } );
@@ -50,8 +41,9 @@ export function createMarkdown( jsCode ) {
    const tocTemplate = swig.compileFile( templateDir( 'toc_template' ) );
    const typeTemplate = swig.compileFile( templateDir( 'type_template' ) );
    const functionTemplate = swig.compileFile( templateDir( 'function_template' ) );
+   const propertyTemplate = swig.compileFile( templateDir( 'property_template' ) );
 
-   const commentHierarchy = buildCommentHierarchy( doxResults );
+   const commentHierarchy = buildCommentHierarchy( doxResults, options );
 
    // extract module description
    const module = ( ( commentHierarchy.filter( isGlobal )[ 0 ] || {} ).children || [] )
@@ -66,7 +58,7 @@ export function createMarkdown( jsCode ) {
          ( type.children || [] )
             .filter( not( isModule ) )
             .map( member => ({ ...member, fullName: member.name }) )
-            .map( functionTemplate ).join( '' )
+            .map( _ => isFunction( _ ) ? functionTemplate( _ ) : propertyTemplate( _ ) ).join( '\n\n' )
       )
       .join( '' );
    const moduleMembersToc = [].concat( ...moduleMembers
@@ -129,9 +121,9 @@ function renderTypesWithChildrenToc( types, tocTemplate ) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function buildCommentHierarchy( doxComments ) {
+function buildCommentHierarchy( doxComments, options ) {
    return doxComments.reduce( ( rootItems, doxComment ) => {
-      const item = parse( doxComment );
+      const item = parse( doxComment, options );
       if( item.dox.isConstructor ||
           isInjection( doxComment ) ||
           isDirective( doxComment ) ||
@@ -178,7 +170,11 @@ function buildCommentHierarchy( doxComments ) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function parse( doxComment ) {
+function parse( doxComment, options ) {
+   if( !( 'ctx' in doxComment ) ) {
+      doxComment.ctx = false;
+   }
+
    const parsed = {
       // An explicitly given name is used in favor of a derived one.
       name: ( tagsByType( doxComment.tags, 'name', 'directive', 'injection', 'module' )[ 0 ] || {} ).string ||
@@ -224,6 +220,12 @@ function parse( doxComment ) {
             dox: tag
          })
       )[ 0 ] || null;
+
+   if( options.verbose ) {
+      /* eslint-disable no-console */
+      console.log( JSON.stringify( parsed, null, 3 ) );
+      /* eslint-enable no-console */
+   }
 
    return parsed;
 }
@@ -297,6 +299,25 @@ function isInjection( obj ) {
 function isDirective( obj ) {
    const doxComment = obj.hasOwnProperty( 'dox' ) ? obj.dox : obj;
    return ( doxComment.tags || [] ).some( tag => tag.type === 'directive' );
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function isFunction( obj ) {
+   const doxComment = obj.hasOwnProperty( 'dox' ) ? obj.dox : obj;
+   if( doxComment.ctx.type === 'method' || doxComment.ctx.type === 'function' ) {
+      return true;
+   }
+   if( doxComment.tags ) {
+      const hasFunctionType = doxComment.tags.some( tag =>
+         tag.type === 'type' &&
+            ( tag.types.indexOf( 'Function' ) !== -1 || tag.types.indexOf( 'function' ) !== -1 )
+      );
+      if( hasFunctionType ) {
+         return hasFunctionType;
+      }
+   }
+   return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

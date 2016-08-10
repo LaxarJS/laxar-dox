@@ -2,7 +2,8 @@
 
 ## Last Changes
 
-- [#10](https://github.com/LaxarJS/laxar-dox/issues/10): Added support for generating api doc for multiple files at once
+- [#8](https://github.com/LaxarJS/laxar-dox/issues/8): added support for non-function module members
+- [#10](https://github.com/LaxarJS/laxar-dox/issues/10): added support for generating api doc for multiple files at once
     + NEW FEATURE: see ticket for details
 - [#11](https://github.com/LaxarJS/laxar-dox/issues/11): updated code to ES2015
 - [#7](https://github.com/LaxarJS/laxar-dox/issues/7): tables: preserving linebreaks where feasible

@@ -18,6 +18,10 @@ program
       '-d, --directory [outputDirectory]',
       'The output directory for generated documentation. Filenames are generated as "*filename*.md".'
    )
+   .option(
+      '--verbose',
+      'Print debugging information. Note that this will print very much information!'
+   )
    .on( '--help', function() {
       console.log( '  If more than one file is passed as argument, the -d option is mandatory.' );
       console.log(
@@ -60,7 +64,9 @@ if( files.length === 1 && program.directory && program.output ) {
 var directoryCreated = false;
 files.forEach( function( file ) {
    var jsCode = fs.readFileSync( file ).toString();
-   var doc = docBuilder.createMarkdown( jsCode );
+   var doc = docBuilder.createMarkdown( jsCode, {
+      verbose: !!program.verbose
+   } );
 
    var outFile = outputFile( file );
    if( !directoryCreated ) {
