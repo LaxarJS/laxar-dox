@@ -11,6 +11,9 @@ import swig from 'swig';
 const GLOBAL_ITEM_NAME = 'ax__global__';
 
 export function createMarkdown( jsCode, options = {} ) {
+   /* eslint-disable no-console */
+   const warn = typeof options.warn === 'function' ? options.warn : _ => { console.warn( _ ); };
+   /* eslint-enable no-console */
    const doxResults = dox
       .parseComments( jsCode, {
          raw: true,
@@ -49,6 +52,9 @@ export function createMarkdown( jsCode, options = {} ) {
    const module = ( ( commentHierarchy.filter( isGlobal )[ 0 ] || {} ).children || [] )
       .filter( isModule )[ 0 ];
 
+   if( !module ) {
+      warn( 'no top-level module definition found (@module)' );
+   }
 
    // render Module members
    const moduleMembers = commentHierarchy

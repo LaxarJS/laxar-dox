@@ -12,11 +12,20 @@ program
    .usage( '[options] <file(s)>' )
    .option(
       '-o, --output [outputFile]',
-      'The name of the generated api doc file, "out.md" if not given'
+      'The name of the generated api doc file, "*filename*.md" if not given'
    )
    .option(
       '-d, --directory [outputDirectory]',
       'The output directory for generated documentation. Filenames are generated as "*filename*.md".'
+   )
+   .option(
+      '--naming-style-package',
+      'Can be used together with "-d". If the file to document is located in a subdirectory, the ' +
+      'generated markdown file will receive its name as prefix, separated by a dot from the original ' +
+      'filename. The ".js" suffix is removed and ".md" added. If the file is passed without subdirectory ' +
+      'it won\'t receive a prefix.\n' +
+      'Example: "lib/utilities/string.js" will be "utilities.string.md", ' +
+      'while "laxar.js" will be "laxar.md".'
    )
    .option(
       '--verbose',
@@ -31,11 +40,11 @@ program
       console.log( '  Examples:' );
       console.log( '');
       console.log( '    $ bin/laxardox src/lib.js' );
-      console.log( '       # creates "out.md" in the current directory' );
+      console.log( '       # creates "lib.md" in the current directory' );
       console.log( '    $ bin/laxardox -o docs/lib.md src/lib.js' );
       console.log( '       # creates "docs/lib.md"' );
       console.log( '    $ bin/laxardox -d docs src/lib.js src/utils.js' );
-      console.log( '       # creates "docs/lib.js.md" and "docs/utils.js.md"' );
+      console.log( '       # creates "docs/lib.md" and "docs/utils.md"' );
       console.log( '');
    } )
    .parse( process.argv );
@@ -65,7 +74,10 @@ var directoryCreated = false;
 files.forEach( function( file ) {
    var jsCode = fs.readFileSync( file ).toString();
    var doc = docBuilder.createMarkdown( jsCode, {
-      verbose: !!program.verbose
+      verbose: !!program.verbose,
+      warn: message => {
+         console.warn( 'WARN (@ ' + file + '): ' + message );
+      }
    } );
 
    var outFile = outputFile( file );
@@ -87,8 +99,16 @@ files.forEach( function( file ) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function outputFile( file ) {
-   if( files.length > 1 || ( !program.output && program.directory ) ) {
-      return path.join( program.directory, path.basename( file ) + '.md' );
+   if( files.length === 1 && program.output ) {
+      return program.output;
    }
-   return program.output || 'out.md';
+   var fileInfo = path.parse( file );
+   var filename = fileInfo.name + '.md';
+   if( program.namingStylePackage ) {
+      var parentDir = fileInfo.dir.split( path.sep ).pop();
+      if( parentDir ) {
+         filename = parentDir + '.' + filename;
+      }
+   }
+   return program.directory ? path.join( program.directory, filename ) : filename;
 }

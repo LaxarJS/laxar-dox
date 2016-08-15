@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#14](https://github.com/LaxarJS/laxar-dox/issues/14): added support for package style naming
+    + NEW FEATURE: see ticket for details
 - [#12](https://github.com/LaxarJS/laxar-dox/issues/12): added empty lines and fixed bug from ES2015 update
 - [#8](https://github.com/LaxarJS/laxar-dox/issues/8): added support for non-function module members
 - [#10](https://github.com/LaxarJS/laxar-dox/issues/10): added support for generating api doc for multiple files at once
