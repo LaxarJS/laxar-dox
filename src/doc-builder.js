@@ -22,7 +22,7 @@ export function createMarkdown( jsCode, options = {} ) {
       .map( jsDoc => ({ ...jsDoc, code: undefined }) );
 
    swig.setFilter( 'wrap', ( input, wrapper, condition ) =>
-      condition || wrapper !== undefined ? wrapper + input + wrapper : input
+      condition === undefined || condition ? wrapper + input + wrapper : input
    );
    swig.setFilter( 'if', ( input, condition ) => condition ? input : '' );
    swig.setDefaults( {
