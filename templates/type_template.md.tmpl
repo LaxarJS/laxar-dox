@@ -1,13 +1,16 @@
 ### <a name="{{ name }}"></a>{{ name }}
+{% if extendsType %}
+> extends {{ _renderType( extendsType ) }}
+{% endif %}
 
-{{ description }}
+{{ _replaceLinks( description ) }}
 
 {% if params.length %}
 ##### Parameters
 
 | Property | Type | Description |
 | -------- | ---- | ----------- |
-{% for param in params %}| {{ param.name|wrap('_',param.dox.optional) }}{{ '...'|if(param.dox.variable) }} | `{{ param.types.join( '`, `') }}` | {{param.description }} |
+{% for param in params %}| {{ param.name|wrap('_',param.dox.optional) }}{{ '...'|if(param.dox.variable) }} | {{ _renderTypes( param ) }} | {{ _replaceLinks( param.description ) }} |
 {% endfor %}
 {% endif %}{# params.length #}
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable no-var, no-console, prefer-arrow-callback */
+/* eslint-disable no-var, no-console, object-shorthand, prefer-arrow-callback */
 var program = require( 'commander' );
 var fs = require( 'fs' );
 var path = require( 'path' );
@@ -71,30 +71,65 @@ if( files.length === 1 && program.directory && program.output ) {
 }
 
 var directoryCreated = false;
-files.forEach( function( file ) {
-   var jsCode = fs.readFileSync( file ).toString();
-   var doc = docBuilder.createMarkdown( jsCode, {
-      verbose: !!program.verbose,
-      warn: message => {
-         console.warn( 'WARN (@ ' + file + '): ' + message );
+var options = {
+   verbose: !!program.verbose,
+   warn: function( message, filename ) {
+      console.warn( 'WARN (@ ' + filename + '): ' + message );
+   }
+};
+
+var data = files.map( function( filename ) {
+   var targetFullFilename = outputFile( filename );
+   return {
+      sourceFilename: filename,
+      sourceContent: fs.readFileSync( filename ).toString(),
+      targetFilename: path.basename( targetFullFilename ),
+      targetFullFilename: targetFullFilename
+   };
+} );
+docBuilder.createMarkdownForFiles( data, options )
+   .forEach( function( markdown, index ) {
+      var outFile = data[ index ].targetFullFilename;
+      if( !directoryCreated ) {
+         try {
+            fs.accessSync( path.dirname( outFile ) );
+         }
+         catch( err ) {
+            // directory simply doesn't exist and we need to create it
+            fs.mkdirSync( path.dirname( outFile ) );
+         }
+         finally {
+            directoryCreated = true;
+         }
       }
+      fs.writeFileSync( outFile, markdown );
    } );
 
-   var outFile = outputFile( file );
-   if( !directoryCreated ) {
-      try {
-         fs.accessSync( path.dirname( outFile ) );
-      }
-      catch( err ) {
-         // directory simply doesn't exist and we need to create it
-         fs.mkdirSync( path.dirname( outFile ) );
-      }
-      finally {
-         directoryCreated = true;
-      }
-   }
-   fs.writeFileSync( outFile, doc || '' );
-} );
+//
+// docBuilder.createMarkdownForFiles( files.map( function( filename ) {
+//    var targetFullFilename = outputFile( filename );
+//    return {
+//       sourceContent: fs.readFileSync( filename ).toString(),
+//       targetFilename: path.basename( targetFullFilename ),
+//       targetFullFilename: targetFullFilename
+//    };
+// } ), options )
+//    .forEach( function( doc ) {
+//       var outFile = doc.targetFullFilename;
+//       if( !directoryCreated ) {
+//          try {
+//             fs.accessSync( path.dirname( outFile ) );
+//          }
+//          catch( err ) {
+//             // directory simply doesn't exist and we need to create it
+//             fs.mkdirSync( path.dirname( outFile ) );
+//          }
+//          finally {
+//             directoryCreated = true;
+//          }
+//       }
+//       fs.writeFileSync( outFile, doc.markdown );
+//    } );
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

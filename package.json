@@ -18,7 +18,8 @@
   },
   "scripts": {
     "prepublish": "npm run lint && npm run build",
-    "build": "babel -d lib src",
+    "build": "babel -d lib/ -s inline src",
+    "develop": "babel -d lib/ -s inline -w src",
     "lint": "eslint src"
   },
   "main": "lib/index.js",

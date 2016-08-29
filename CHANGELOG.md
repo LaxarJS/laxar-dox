@@ -2,6 +2,7 @@
 
 ## Last Changes
 
+- [#13](https://github.com/LaxarJS/laxar-dox/issues/13): improved linking between symbols
 - [#14](https://github.com/LaxarJS/laxar-dox/issues/14): added support for package style naming
     + NEW FEATURE: see ticket for details
 - [#12](https://github.com/LaxarJS/laxar-dox/issues/12): added empty lines and fixed bug from ES2015 update

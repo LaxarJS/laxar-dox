@@ -1,7 +1,7 @@
 {% if module %}
-# {{module.name}}
+# <a name="{{ module.name }}"></a>{{ module.name }}
 
-{{module.description}}
+{{ _replaceLinks( module.description ) }}
 {% endif %}{# module #}
 
 ## Contents
