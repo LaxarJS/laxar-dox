@@ -2,6 +2,9 @@
 
 ## Last Changes
 
+- [#16](https://github.com/LaxarJS/laxar-dox/issues/16): memberof: fixed wrong camel case usage
+
+
 ## v2.0.0-alpha.1
 ## v2.0.0-alpha.0
 
