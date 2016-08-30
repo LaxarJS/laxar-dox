@@ -2,6 +2,7 @@
 
 ## Last Changes
 
+## v2.0.0-alpha.1
 ## v2.0.0-alpha.0
 
 - [#13](https://github.com/LaxarJS/laxar-dox/issues/13): improved linking between symbols
