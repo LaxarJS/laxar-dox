@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+## v2.0.0-alpha.0
+
 - [#13](https://github.com/LaxarJS/laxar-dox/issues/13): improved linking between symbols
 - [#14](https://github.com/LaxarJS/laxar-dox/issues/14): added support for package style naming
     + NEW FEATURE: see ticket for details
