@@ -61,13 +61,19 @@ export function isFunction( obj ) {
    if( doxComment.ctx.type === 'method' || doxComment.ctx.type === 'function' ) {
       return true;
    }
+
    if( doxComment.tags ) {
       const hasFunctionType = doxComment.tags.some( tag =>
          tag.type === 'type' &&
             ( tag.types.indexOf( 'Function' ) !== -1 || tag.types.indexOf( 'function' ) !== -1 )
       );
       if( hasFunctionType ) {
-         return hasFunctionType;
+         return true;
+      }
+
+      const hasParamOrReturn = doxComment.tags.some( tag => tag.type === 'param' || tag.type === 'return' );
+      if( hasParamOrReturn ) {
+         return true;
       }
    }
    return false;

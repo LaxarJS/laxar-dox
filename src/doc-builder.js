@@ -192,8 +192,11 @@ function createSwigTemplates() {
 function renderTypesWithChildren( types, templates, locals ) {
    return types.map( type => {
       const members = ( type.children || [] )
-         .map( member => ({ ...locals, ...member, fullName: `${type.name}.${member.name}` }) )
-         .map( templates.function ).join( '' );
+         .map( member => {
+            const renderData = ({ ...locals, ...member, fullName: `${type.name}.${member.name}` });
+            return templates[ isFunction( member ) ? 'function' : 'property' ]( renderData );
+         } )
+         .join( '' );
       return { ...locals, ...type, members };
    } )
    .map( templates.type ).join( '' );

@@ -2,6 +2,9 @@
 
 ## Last Changes
 
+- [#18](https://github.com/LaxarJS/laxar-dox/issues/18): fixed rendering of type properties
+
+
 ## v2.0.0-alpha.2
 
 - [#16](https://github.com/LaxarJS/laxar-dox/issues/16): memberof: fixed wrong camel case usage
