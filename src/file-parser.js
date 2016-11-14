@@ -33,6 +33,7 @@ export function buildCommentHierarchy( doxComments, options ) {
          // A class constructor, an AngularJS directive or an injectable service is always a root item
          const existingItem = findItemByName( rootItems, item.name );
          if( !existingItem ) {
+            symbols.push( item.name );
             item.children = [];
             return rootItems.concat( item );
          }
