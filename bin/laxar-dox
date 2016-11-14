@@ -39,11 +39,11 @@ program
       console.log( '' );
       console.log( '  Examples:' );
       console.log( '');
-      console.log( '    $ bin/laxardox src/lib.js' );
+      console.log( '    $ bin/laxar-dox src/lib.js' );
       console.log( '       # creates "lib.md" in the current directory' );
-      console.log( '    $ bin/laxardox -o docs/lib.md src/lib.js' );
+      console.log( '    $ bin/laxar-dox -o docs/lib.md src/lib.js' );
       console.log( '       # creates "docs/lib.md"' );
-      console.log( '    $ bin/laxardox -d docs src/lib.js src/utils.js' );
+      console.log( '    $ bin/laxar-dox -d docs src/lib.js src/utils.js' );
       console.log( '       # creates "docs/lib.md" and "docs/utils.md"' );
       console.log( '');
    } )

@@ -24,7 +24,7 @@
   },
   "main": "lib/index.js",
   "bin": {
-    "laxardox": "./bin/laxardox"
+    "laxar-dox": "./bin/laxar-dox"
   },
   "contributors": [],
   "dependencies": {
