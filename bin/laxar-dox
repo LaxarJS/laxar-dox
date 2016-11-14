@@ -19,6 +19,13 @@ program
       'The output directory for generated documentation. Filenames are generated as "*filename*.md".'
    )
    .option(
+      '--modules-from-directory',
+      'If this is given the input is treated as a directory instead of a single or set of files. ' +
+      'All files from that directory and its subdirectories are than parsed and, if they declare a module ' +
+      'using the @module tag and none of the tags @private or @ignore is present, documentation is ' +
+      'generated for them.'
+   )
+   .option(
       '--naming-style-package',
       'Can be used together with "-d". If the file to document is located in a subdirectory, the ' +
       'generated markdown file will receive its name as prefix, separated by a dot from the original ' +
@@ -45,6 +52,8 @@ program
       console.log( '       # creates "docs/lib.md"' );
       console.log( '    $ bin/laxar-dox -d docs src/lib.js src/utils.js' );
       console.log( '       # creates "docs/lib.md" and "docs/utils.md"' );
+      console.log( '    $ bin/laxar-dox -d docs --modules-from-directory src/' );
+      console.log( '       # creates documentation from all files defining a publicly visible module' );
       console.log( '');
    } )
    .parse( process.argv );
@@ -70,12 +79,19 @@ if( files.length === 1 && program.directory && program.output ) {
    process.exit( 1 );
 }
 
+if( program.modulesFromDirectory && files.length > 0 ) {
+   files = files.reduce( function( directories, dir ) {
+      return directories.concat( selectSourceFilesFromDirectory( dir ) );
+   }, [] );
+}
+
 var directoryCreated = false;
 var options = {
    verbose: !!program.verbose,
    warn: function( message, filename ) {
       console.warn( 'WARN (@ ' + filename + '): ' + message );
-   }
+   },
+   onlyPublicModules: program.modulesFromDirectory
 };
 
 var data = files.map( function( filename ) {
@@ -88,8 +104,8 @@ var data = files.map( function( filename ) {
    };
 } );
 docBuilder.createMarkdownForFiles( data, options )
-   .forEach( function( markdown, index ) {
-      var outFile = data[ index ].targetFullFilename;
+   .forEach( function( file ) {
+      var outFile = file.targetFullFilename;
       if( !directoryCreated ) {
          try {
             fs.accessSync( path.dirname( outFile ) );
@@ -102,34 +118,8 @@ docBuilder.createMarkdownForFiles( data, options )
             directoryCreated = true;
          }
       }
-      fs.writeFileSync( outFile, markdown );
+      fs.writeFileSync( outFile, file.markdown );
    } );
-
-//
-// docBuilder.createMarkdownForFiles( files.map( function( filename ) {
-//    var targetFullFilename = outputFile( filename );
-//    return {
-//       sourceContent: fs.readFileSync( filename ).toString(),
-//       targetFilename: path.basename( targetFullFilename ),
-//       targetFullFilename: targetFullFilename
-//    };
-// } ), options )
-//    .forEach( function( doc ) {
-//       var outFile = doc.targetFullFilename;
-//       if( !directoryCreated ) {
-//          try {
-//             fs.accessSync( path.dirname( outFile ) );
-//          }
-//          catch( err ) {
-//             // directory simply doesn't exist and we need to create it
-//             fs.mkdirSync( path.dirname( outFile ) );
-//          }
-//          finally {
-//             directoryCreated = true;
-//          }
-//       }
-//       fs.writeFileSync( outFile, doc.markdown );
-//    } );
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -146,4 +136,20 @@ function outputFile( file ) {
       }
    }
    return program.directory ? path.join( program.directory, filename ) : filename;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function selectSourceFilesFromDirectory( directory ) {
+   var contents = fs.readdirSync( directory );
+   return contents.reduce( function( files, item ) {
+      var fullItem = path.join( directory, item );
+      if( fs.statSync( fullItem ).isDirectory() ) {
+         return files.concat( selectSourceFilesFromDirectory( fullItem ) );
+      }
+      if( fullItem.endsWith( '.js' ) ) {
+         return files.concat( fullItem );
+      }
+      return files;
+   }, [] );
 }

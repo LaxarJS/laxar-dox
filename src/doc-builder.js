@@ -45,13 +45,14 @@ export function createMarkdownForFiles( files, options ) {
             .filter( not( isPrivate ) )
             .map( jsDoc => ({ ...jsDoc, code: undefined }) );
 
-         const { moduleName, commentHierarchy, symbols } = buildCommentHierarchy( doxResults, options );
+         const { moduleName, moduleHidden, commentHierarchy, symbols } =
+            buildCommentHierarchy( doxResults, options );
 
          if( moduleName ) {
             symbolsToFilename[ moduleName ] = file.targetFilename;
             duplicateModuleChecker.register( moduleName, file.sourceFilename );
          }
-         else {
+         else if( !options.onlyPublicModules ) {
             warn( file.sourceFilename, 'no top-level module definition found (@module)' );
          }
          symbols.forEach( _ => {
@@ -61,9 +62,22 @@ export function createMarkdownForFiles( files, options ) {
             }
          } );
 
-         return { file, moduleName, commentHierarchy, symbols };
+         return { file, moduleName, moduleHidden, commentHierarchy, symbols };
       } )
-      .map( ({ moduleName, commentHierarchy, symbols }) => {
+      .filter( ({ file, moduleName, moduleHidden }) => {
+         if( options.onlyPublicModules && ( !moduleName || moduleHidden ) ) {
+            if( options.verbose ) {
+               /* eslint-disable no-console */
+               const name = file.sourceFilename;
+               console.log( `Omitting file '${name}', because it defines no publicly visible module` );
+               /* eslint-enable no-console */
+            }
+            return false;
+         }
+
+         return true;
+      } )
+      .map( ({ file, moduleName, commentHierarchy, symbols }) => {
          const transformers = createTransformers( moduleName, symbolsToFilename, symbols );
 
          const module = ( ( commentHierarchy.filter( isGlobal )[ 0 ] || {} ).children || [] )
@@ -105,18 +119,21 @@ export function createMarkdownForFiles( files, options ) {
 
          const typeWithChildren = types => renderTypesWithChildren( types, templates, transformers );
 
-         return reduceEmptyLines( templates.doc( {
-            ...transformers,
-            module,
-            moduleMembersToc: templates.toc( { entries: moduleMembersToc } ).trim(),
-            injectablesToc: renderTypesWithChildrenToc( injectables, templates.toc ),
-            directivesToc: renderTypesWithChildrenToc( directives, templates.toc ),
-            typesToc: renderTypesWithChildrenToc( types, templates.toc ),
-            moduleMembers: moduleMembersContent,
-            injectables: typeWithChildren( injectables ),
-            directives: typeWithChildren( directives ),
-            types: typeWithChildren( types )
-         } ) );
+         return {
+            ...file,
+            markdown: reduceEmptyLines( templates.doc( {
+               ...transformers,
+               module,
+               moduleMembersToc: templates.toc( { entries: moduleMembersToc } ).trim(),
+               injectablesToc: renderTypesWithChildrenToc( injectables, templates.toc ),
+               directivesToc: renderTypesWithChildrenToc( directives, templates.toc ),
+               typesToc: renderTypesWithChildrenToc( types, templates.toc ),
+               moduleMembers: moduleMembersContent,
+               injectables: typeWithChildren( injectables ),
+               directives: typeWithChildren( directives ),
+               types: typeWithChildren( types )
+            } ) )
+         };
       } );
 
    duplicateModuleChecker.check();

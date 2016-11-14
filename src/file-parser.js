@@ -17,11 +17,13 @@ import {
 
 export function buildCommentHierarchy( doxComments, options ) {
    let moduleName = '';
+   let moduleHidden = false;
    const symbols = [];
    const commentHierarchy = doxComments.reduce( ( rootItems, doxComment ) => {
       const item = parse( doxComment, options );
       if( isModule( item ) ) {
          moduleName = item.name;
+         moduleHidden = !!tagsByType( doxComment.tags, 'ignore' )[ 0 ];
       }
       if( item.dox.isConstructor ||
           isInjection( doxComment ) ||
@@ -78,7 +80,7 @@ export function buildCommentHierarchy( doxComments, options ) {
       return rootItems;
    }, [] );
 
-   return { moduleName, commentHierarchy, symbols };
+   return { moduleName, moduleHidden, commentHierarchy, symbols };
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

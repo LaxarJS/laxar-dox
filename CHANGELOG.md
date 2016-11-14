@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#22](https://github.com/LaxarJS/laxar-dox/issues/22): added support for reading all modules of a directory tree
+    + NEW FEATURE: see ticket for details
 - [#19](https://github.com/LaxarJS/laxar-dox/issues/19): fixed types not linked without members
 - [#20](https://github.com/LaxarJS/laxar-dox/issues/20): fixed local link anchors
 - [#23](https://github.com/LaxarJS/laxar-dox/issues/23): renamed `bin/laxardox` to `bin/laxar-dox`
