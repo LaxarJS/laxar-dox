@@ -2,6 +2,7 @@
 
 ## Last Changes
 
+- [#24](https://github.com/LaxarJS/laxar-dox/issues/24): fixed eslint warnings ("no-useless-escape")
 - [#22](https://github.com/LaxarJS/laxar-dox/issues/22): added support for reading all modules of a directory tree
     + NEW FEATURE: see ticket for details
 - [#19](https://github.com/LaxarJS/laxar-dox/issues/19): fixed types not linked without members

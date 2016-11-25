@@ -102,7 +102,7 @@ function parse( doxComment, options ) {
    const optional = [];
    parsed.params = tagsByType( doxComment.tags, 'param' )
       .map( tag => {
-         const cleanName = tag.name.replace( /^\[?([^\]]*)\]?$/g, '$1' );
+         const cleanName = tag.name.replace( /^\[?([^\]]*)]?$/g, '$1' );
          const parents = cleanName.split( '.' ).slice( 0, -1 );
          if( tag.optional ) {
             optional.push( cleanName );
@@ -164,7 +164,7 @@ function convertLineBreaks( text ) {
       .map( line => {
          const forcedLineBreak = previousEmpty;
          previousEmpty = line.length === 0;
-         return ( ( forcedLineBreak || line.match( /^[*\-]/ ) ) ? '<br>' : ' ' ) + line;
+         return ( ( forcedLineBreak || line.match( /^[*-]/ ) ) ? '<br>' : ' ' ) + line;
       } )
       .join( '' );
 }

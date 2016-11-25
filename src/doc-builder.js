@@ -21,7 +21,7 @@ import {
 import { buildCommentHierarchy } from './file-parser';
 
 const LINK_MATCHER =
-   /\{@link(plain)? ([\w-]+)?(?:#([\w]+))?\.?([\w]+)?(\(\))?( [^\}]+)?\}/gi;
+   /\{@link(plain)? ([\w-]+)?(?:#([\w]+))?\.?([\w]+)?(\(\))?( [^}]+)?\}/gi;
 
 export function createMarkdownForFiles( files, options ) {
    const warn = options.warn || ( ( filename, message ) => {
