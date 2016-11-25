@@ -2,6 +2,9 @@
 
 ## Last Changes
 
+
+## v2.0.0-alpha.4
+
 - [#24](https://github.com/LaxarJS/laxar-dox/issues/24): fixed eslint warnings ("no-useless-escape")
 - [#22](https://github.com/LaxarJS/laxar-dox/issues/22): added support for reading all modules of a directory tree
     + NEW FEATURE: see ticket for details
