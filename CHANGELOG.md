@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#17](https://github.com/LaxarJS/laxar-dox/issues/17): added support for properties of functions in module scope
+
 
 ## v2.0.0-alpha.4
 

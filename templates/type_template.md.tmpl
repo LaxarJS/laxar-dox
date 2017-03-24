@@ -14,4 +14,12 @@
 {% endfor %}
 {% endif %}{# params.length #}
 
+{% if returns %}
+##### Returns
+
+| Type | Description |
+| ---- | ----------- |
+| {{ _renderTypes( returns ) }} | {{ _replaceLinks( returns.description ) }} |
+{% endif %}{# returns #}
+
 {{ members }}

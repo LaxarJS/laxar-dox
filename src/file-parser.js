@@ -45,7 +45,8 @@ export function buildCommentHierarchy( doxComments, options ) {
 
       const memberof = ( tagsByType( doxComment.tags, 'memberof' )[ 0 ] || {} ).string;
       const belongsTo = memberof ||
-         ( typeof doxComment.ctx.constructor === 'string' ? doxComment.ctx.constructor : null );
+         ( typeof doxComment.ctx.constructor === 'string' ? doxComment.ctx.constructor : null ) ||
+         ( typeof doxComment.ctx.receiver === 'string' ? doxComment.ctx.receiver : null );
       if( belongsTo ) {
          if( symbols.indexOf( belongsTo ) === -1 ) {
             symbols.push( belongsTo );
