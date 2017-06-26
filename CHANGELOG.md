@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#21](https://github.com/LaxarJS/laxar-dox/issues/21): fixed misinterpretation of module doc comment
+
 
 ## v2.0.0-rc.1
 

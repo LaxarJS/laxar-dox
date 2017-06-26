@@ -31,14 +31,10 @@ beforeEach( () => {
 
 tests.forEach( test => {
 
-   describe( `${test.name}`, () => {
+   it( `${test.name} creates the expected output`, () => {
+      writeTemporaryResult( test.name, test.actualMarkdown );
 
-      it( 'creates the expected output', () => {
-         writeTemporaryResult( test.name, test.actualMarkdown );
-
-         expect( test.actualMarkdown ).to.equal( test.expectedMarkdown );
-      } );
-
+      expect( test.actualMarkdown ).to.equal( test.expectedMarkdown );
    } );
 
 } );

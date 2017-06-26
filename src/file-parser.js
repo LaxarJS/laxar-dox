@@ -24,6 +24,10 @@ export function buildCommentHierarchy( doxComments, options ) {
       if( isModule( item ) ) {
          moduleName = item.name;
          moduleHidden = !!tagsByType( doxComment.tags, 'ignore' )[ 0 ];
+         // remove all automatically (and probably wrongly) derived context. Modules are always explicitly
+         // marked as such and any other context that was found most probably belongs to an item without doc
+         // comment directly following the module header (see https://github.com/LaxarJS/laxar-dox/issues/21).
+         doxComment.ctx = false;
       }
       if( item.dox.isConstructor ||
           isInjection( doxComment ) ||
