@@ -23,7 +23,7 @@ import { buildCommentHierarchy } from './file-parser';
 const LINK_MATCHER =
    /\{@link(plain)? ([\w-]+)?(?:#([\w]+))?\.?([\w]+)?(\(\))?( [^}]+)?\}/gi;
 
-export function createMarkdownForFiles( files, options ) {
+export function createMarkdownForFiles( files, options = {} ) {
    const warn = options.warn || ( ( filename, message ) => {
       // eslint-disable-next-line no-console
       console.warn( 'WARN (@ ' + filename + '): ' + message );
