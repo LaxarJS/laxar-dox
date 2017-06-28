@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#28](https://github.com/LaxarJS/laxar-dox/issues/28): updated eslint config dependency
+
 
 ## v2.0.0
 ## v2.0.0-rc.2
