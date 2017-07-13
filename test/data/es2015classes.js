@@ -1,7 +1,7 @@
 /**
  * Tests for support of classes in ES2016 syntax.
  *
- * @module references
+ * @module es2015classes
  */
 
 /**

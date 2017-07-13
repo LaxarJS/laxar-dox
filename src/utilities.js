@@ -28,6 +28,14 @@ export function description( obj ) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+export function deprecation( obj ) {
+   const doxComment = obj.hasOwnProperty( 'dox' ) ? obj.dox : obj;
+   const tag = tagsByType( doxComment.tags, 'deprecated' )[ 0 ];
+   return tag ? tag.string.trim() : null;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export function isGlobal( item ) {
    // TODO: also extract dox property for name?
    return item.name === GLOBAL_ITEM_NAME;

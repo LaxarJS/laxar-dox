@@ -1,5 +1,5 @@
 
-# <a id="references"></a>references
+# <a id="es2015classes"></a>es2015classes
 
 Tests for support of classes in ES2016 syntax.
 

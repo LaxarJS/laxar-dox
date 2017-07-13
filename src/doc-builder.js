@@ -9,6 +9,7 @@ import path from 'path';
 import swig from 'swig-templates';
 import {
    and,
+   deprecation,
    description,
    isPrivate,
    isFunction,
@@ -102,7 +103,8 @@ export function createMarkdownForFiles( files, options = {} ) {
                   .filter( not( isModule ) )
                   .map( member => ({
                      link: `#${member.name}`,
-                     name: member.name + ( isFunction( member ) ? '()' : '' )
+                     name: member.name + ( isFunction( member ) ? '()' : '' ) +
+                        transformers._deprecationTitle( member )
                   }) )
             ) );
 
@@ -127,9 +129,9 @@ export function createMarkdownForFiles( files, options = {} ) {
                ...transformers,
                module,
                moduleMembersToc: templates.toc( { entries: moduleMembersToc } ).trim(),
-               injectablesToc: renderTypesWithChildrenToc( injectables, templates.toc ),
-               directivesToc: renderTypesWithChildrenToc( directives, templates.toc ),
-               typesToc: renderTypesWithChildrenToc( types, templates.toc ),
+               injectablesToc: renderTypesWithChildrenToc( injectables, templates.toc, transformers ),
+               directivesToc: renderTypesWithChildrenToc( directives, templates.toc, transformers ),
+               typesToc: renderTypesWithChildrenToc( types, templates.toc, transformers ),
                moduleMembers: moduleMembersContent,
                injectables: typeWithChildren( injectables ),
                directives: typeWithChildren( directives ),
@@ -191,7 +193,19 @@ function createTransformers( moduleName, symbolsToFilename, localSymbols ) {
       const types = ( dox.tags.filter( _ => _.type === 'type' )[ 0 ] || {} ).types || [];
       return _renderType( types[ 0 ] );
    };
-   return { _replaceLinks, _renderType, _renderTypes, _renderPropertyType };
+   const _deprecationTitle = obj => deprecation( obj ) ? ' **(Deprecated)**' : '';
+   const _deprecationText = obj => {
+      const deprecationNotice = deprecation( obj );
+      return deprecationNotice ? `\n\n**Deprecated:**\n\n> ${_replaceLinks(deprecationNotice)}\n\n` : '';
+   };
+   return {
+      _replaceLinks,
+      _renderType,
+      _renderTypes,
+      _renderPropertyType,
+      _deprecationTitle,
+      _deprecationText
+   };
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,17 +250,18 @@ function renderTypesWithChildren( types, templates, locals ) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function renderTypesWithChildrenToc( types, tocTemplate ) {
+function renderTypesWithChildrenToc( types, tocTemplate, transformers ) {
    const tocString = types.map( type =>
       ({
-         name: type.name,
+         name: type.name + transformers._deprecationTitle( type ),
          link: `#${type.name}`,
          children: ( type.children || [] )
             .map( member => {
                const commonPrefix = `${type.name}.${member.name}`;
                return {
                   link: `#${commonPrefix}`,
-                  name: commonPrefix + ( isFunction( member ) ? '()' : '' )
+                  name: commonPrefix + ( isFunction( member ) ? '()' : '' ) +
+                     transformers._deprecationTitle( member )
                };
             } )
       })

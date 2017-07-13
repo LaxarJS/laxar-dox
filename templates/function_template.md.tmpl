@@ -1,5 +1,5 @@
 #### <a id="{{ fullName }}"></a>{{ fullName }}({{ paramsForArgsList.join(', ')|wrap(' ',paramsForArgsList.length) }})
-
+{{ _deprecationText( dox ) }}
 {{ _replaceLinks( description ) }}
 
 {% if params.length %}

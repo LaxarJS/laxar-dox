@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#25](https://github.com/LaxarJS/laxar-dox/issues/25): added support for deprecated tag
+    + NEW FEATURE: see ticket for details
 - [#26](https://github.com/LaxarJS/laxar-dox/issues/26): switched to swig-templates
 - [#27](https://github.com/LaxarJS/laxar-dox/issues/27): added support for ES2015 class syntax
 

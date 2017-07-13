@@ -2,7 +2,7 @@
 {% if extendsType %}
 > extends {{ _renderType( extendsType ) }}
 {% endif %}
-
+{{ _deprecationText( dox ) }}
 {{ _replaceLinks( description ) }}
 
 {% if params.length %}
