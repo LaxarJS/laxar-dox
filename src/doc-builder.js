@@ -16,7 +16,8 @@ import {
    isModule,
    isInjection,
    isDirective,
-   not
+   not,
+   getPath
 } from './utilities';
 import { buildCommentHierarchy } from './file-parser';
 
@@ -107,7 +108,8 @@ export function createMarkdownForFiles( files, options = {} ) {
 
          // extract types / classes
          const types = commentHierarchy
-            .filter( and( not( isGlobal ), not( isInjection ), not( isDirective ) ) );
+            .filter( and( not( isGlobal ), not( isInjection ), not( isDirective ) ) )
+            .map( type => detectAndTransformEs2015Class( type ) );
 
          // extract injectable services
          const injectables = commentHierarchy
@@ -139,6 +141,19 @@ export function createMarkdownForFiles( files, options = {} ) {
    duplicateModuleChecker.check();
 
    return result;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function detectAndTransformEs2015Class( type ) {
+   const typeName = type.name;
+   const classDefinition =
+      type.children.find( child => child.name === typeName && getPath( child, 'dox.ctx.type' ) === 'class' );
+   if( classDefinition ) {
+      classDefinition.children = type.children.filter( child => child !== classDefinition );
+      return classDefinition;
+   }
+   return type;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

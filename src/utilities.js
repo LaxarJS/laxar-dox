@@ -111,3 +111,23 @@ export function extend( target, source ) {
    } );
    return target;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function getPath( obj, thePath, optionalDefault = undefined ) {
+   const pathArr = thePath.split( '.' );
+   let node = obj;
+   let key = pathArr.shift();
+
+   while( key ) {
+      if( node && typeof node === 'object' && node.hasOwnProperty( key ) ) {
+         node = node[ key ];
+         key = pathArr.shift();
+      }
+      else {
+         return optionalDefault;
+      }
+   }
+
+   return node;
+}

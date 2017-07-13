@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#27](https://github.com/LaxarJS/laxar-dox/issues/27): added support for ES2015 class syntax
+
 
 ## v2.0.1
 
