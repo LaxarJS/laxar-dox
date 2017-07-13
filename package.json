@@ -29,10 +29,10 @@
    },
    "contributors": [],
    "dependencies": {
-      "commander": "~2.9.0",
-      "dox": "~0.9.0",
+      "commander": "^2.9.0",
+      "dox": "^0.9.0",
       "source-map-support": "^0.4.2",
-      "swig": "~1.4.2"
+      "swig-templates": "^2.0.0"
    },
    "devDependencies": {
       "babel-cli": "^6.11.4",

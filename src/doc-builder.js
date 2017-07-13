@@ -6,7 +6,7 @@
 import 'source-map-support/register';
 import dox from 'dox';
 import path from 'path';
-import swig from 'swig';
+import swig from 'swig-templates';
 import {
    and,
    description,
