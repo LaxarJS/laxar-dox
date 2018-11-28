@@ -2,6 +2,8 @@
 
 ## Last Changes
 
+- [#29](https://github.com/LaxarJS/laxar-dox/issues/29): fixed tests
+
 
 ## v2.1.0
 
