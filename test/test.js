@@ -1,4 +1,4 @@
-const { readdirSync, readFileSync, writeFileSync, mkdirSync } = require( 'fs' );
+const { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } = require( 'fs' );
 const { basename, extname, resolve } = require( 'path' );
 const { createMarkdownForFiles } = require( '../lib/doc-builder' );
 const { expect } = require( 'chai' );
@@ -19,7 +19,9 @@ const tests = readdirSync( resolve( __dirname, 'data' ) )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const tempDirectory = resolve( __dirname, 'data', 'out' );
-mkdirSync( tempDirectory );
+if( !existsSync( tempDirectory ) ) {
+   mkdirSync( tempDirectory );
+}
 
 beforeEach( () => {
    // we run create the markdown for all files in a single step, to be able to test cross references between
